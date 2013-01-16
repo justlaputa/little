@@ -62,6 +62,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         print r, info, "by: ", self.client_address
         f = StringIO()
         f.write('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
+        f.write('<meta http-equiv="Refresh" \
+        content="1; URL=\"%s\"">' % self.headers['referer'])
         f.write("<html>\n<title>Upload Result Page</title>\n")
         f.write("<body>\n<h2>Upload Result Page</h2>\n")
         f.write("<hr>\n")
