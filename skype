@@ -1,0 +1,13 @@
+#!/bin/bash
+
+SKYPE_USER=skype
+
+docker run -it --rm \
+    -v /etc/localtime:/etc/localtime \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v ${HOME}/.Skype:/home/${SKYPE_USER}/.Skype \
+    -v ${HOME}/Downloads:/home/${SKYPE_USER}/Downloads \
+    -e DISPLAY=unix$DISPLAY \
+    --device /dev/snd --device /dev/video0 \
+    --name skype \
+    -v /run/user/1000/pulse:/run/pulse    jess/skype /bin/bash
