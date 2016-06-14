@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
+# usage: go to the root folder of your git repository, and run this script, it will scan
+# you project and find all empty maven projects and ask you to remove them
 
 import sys
 import subprocess
