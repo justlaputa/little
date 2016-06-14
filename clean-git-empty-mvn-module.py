@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import sys
+import subprocess
+import os
+import shutil
+
+class RemoveEmptyMavenModule:
+    def run(self):
+        untracked_files = subprocess.check_output(['git', 'ls-files', '-o', '--directory'], universal_newlines=True).split('\n')
+        untracked_files = [path for path in untracked_files if path.endswith('/') and not path.endswith('.settings/') and not path.endswith('target/') ]
+
+        count = 0
+
+        for directory in untracked_files:
+            files = [f for f in os.listdir(directory) if not f.startswith('.')]
+            if len(files) == 1 and files[0] == 'target':
+                count += 1
+                print(directory)
+                for f in os.listdir(directory):
+                    print(' -%s' % f)
+                delete = input('Do you want to delete this folder? (Y/n)')
+                if delete == '' or delete.lower().startswith('y'):
+                    print('removing directory: %s' % directory)
+                    shutil.rmtree(directory)
+                else:
+                    print('skipping directory: %s' % directory)
+
+        if count == 0:
+            print('There are no empty maven module folder in your project ☀')
+        else:
+            print('Removed %d empty maven module folders ✌')
+
+def main(args):
+    rm_empty_maven_module = RemoveEmptyMavenModule()
+    rm_empty_maven_module.run()
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
