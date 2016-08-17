@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" == "rm" ]
+then
+  echo "remove all files"
+  ssh vps rm -rf /var/lib/btsync/shared/*
+fi
+
+if [ "$1" == "cp" ]
+then
+  rsync -avPh vps:/var/lib/btsync/shared/"$2" .
+fi
+
+if [ "$1" == "ls" ]
+then
+  ssh vps ls -lht /var/lib/btsync/shared/
+fi
