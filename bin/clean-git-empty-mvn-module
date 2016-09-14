@@ -32,7 +32,7 @@ class RemoveEmptyMavenModule:
         if count == 0:
             print('There are no empty maven module folder in your project ☀')
         else:
-            print('Removed %d empty maven module folders ✌')
+            print('Removed %d empty maven module folders' % count)
 
 def main(args):
     rm_empty_maven_module = RemoveEmptyMavenModule()
