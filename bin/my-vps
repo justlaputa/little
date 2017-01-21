@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ "$1" == "ls" ]
+then
+  ssh vps ls -lht /var/lib/btsync/shared/
+fi
+
+if [ "$1" == "df" ]
+then
+  ssh vps df -h
+fi
+
 if [ $# -ne 2 ]
 then
   echo 'need two arguments'
@@ -25,14 +35,4 @@ then
     echo "successfully synced file to local, removing remove file..."
     ssh vps rm -rf /var/lib/btsync/shared/"$2"
   fi
-fi
-
-if [ "$1" == "ls" ]
-then
-  ssh vps ls -lht /var/lib/btsync/shared/
-fi
-
-if [ "$1" == "df" ]
-then
-  ssh vps df -h
 fi
