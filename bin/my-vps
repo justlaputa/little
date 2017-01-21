@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ $# -ne 2 ]
+then
+  echo 'need two arguments'
+  exit 1
+fi
+
 if [ "$1" == "rm" ]
 then
   echo "remove files"
@@ -9,6 +15,16 @@ fi
 if [ "$1" == "cp" ]
 then
   rsync -avPh vps:/var/lib/btsync/shared/"$2" .
+fi
+
+if [ "$1" == "mv" ]
+then
+  rsync -avPh vps:/var/lib/btsync/shared/"$2" .
+  if [ $? -eq 0 ]
+  then
+    echo "successfully synced file to local, removing remove file..."
+    ssh vps rm -rf /var/lib/btsync/shared/"$2"
+  fi
 fi
 
 if [ "$1" == "ls" ]
