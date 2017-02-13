@@ -1,0 +1,4 @@
+# run this jquery script in holiday calendar:
+# http://holidays-calendar.net/2016/calendar/japan_calendar.html
+
+$('table.td-m > tbody > tr:nth-child(n+2) > td:nth-child(6n + 1)').css({'background-color': 'white', 'color': 'gray'})
