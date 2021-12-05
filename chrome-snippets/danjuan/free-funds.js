@@ -1,4 +1,4 @@
-function ldsfunds() {
+function freefunds() {
     let fundItems = $x('//*[@id="my-money"]/div[2]/div[3]/div[4]/a')
     let funds = []
 
@@ -25,4 +25,4 @@ function parseNumber(s) {
     return Number.parseFloat(s)
 }
 
-console.log(JSON.stringify(ldsfunds()))
+console.log(JSON.stringify(freefunds()))

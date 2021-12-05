@@ -1,5 +1,5 @@
 function cyfunds() {
-    let fundItems = $x('//*[@id="app"]/div[3]/div[2]/div/div/div/div/div[4]/div[position() >= 3]/div')
+    let fundItems = $x('//*[@id="app"]/div[4]/main/div/div/div/div[4]/div[position() >= 3]/div')
     let funds = []
 
     fundItems.forEach(item => {
@@ -19,4 +19,4 @@ function cyfunds() {
     return funds
 }
 
-console.log(JSON.stringify(cyfunds(), null, ' '))
+console.log(JSON.stringify(cyfunds()))
