@@ -1,0 +1,25 @@
+[keyboard]
+bindings=[
+    { chars = "\u001B[1;5A", key = "Up", mods = "Alt"},
+    { chars = "\u001B[1;5B", key = "Down", mods = "Alt"},
+    { chars = "\u001Bb", key = "Left", mods = "Alt"},
+    { chars = "\u001Bf", key = "Right", mods = "Alt"},
+    { chars = "\u001Bf", key = "F", mods = "Alt"},
+    { chars = "\u001Bb", key = "B", mods = "Alt"},
+]
+
+[env]
+TERM = "alacritty"
+
+[font]
+normal = { family = "Hack Nerd Font", style = "Regular" }
+size = 12
+
+[window]
+decorations = "full"
+opacity = 0.95
+startup_mode = "Maximized"
+
+[window.padding]
+x = 4
+y = 6
