@@ -64,6 +64,15 @@ automatically-unhide-macos-hidden-apps = true
     outer.top =        0
     outer.right =      0
 
+
+[workspace-to-monitor-force-assignment]
+    1 = 'main'
+    2 = 'main'
+    3 = 'main'
+    4 = 'main'
+    5 = 'main'
+    0 = 'secondary'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -117,6 +126,7 @@ automatically-unhide-macos-hidden-apps = true
     alt-equal = 'resize smart +50'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+    alt-0 = 'workspace 0'
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
     alt-3 = 'workspace 3'
@@ -124,6 +134,7 @@ automatically-unhide-macos-hidden-apps = true
     alt-5 = 'workspace 5'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+    alt-shift-0 = 'move-node-to-workspace 0'
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
     alt-shift-3 = 'move-node-to-workspace 3'
@@ -162,3 +173,13 @@ automatically-unhide-macos-hidden-apps = true
 [[on-window-detected]]
 if.app-id = 'com.apple.reminders'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+check-further-callbacks = true
+run = ['layout tiling', 'move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.workspace = '5'
+run = 'layout floating'
+
