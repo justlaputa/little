@@ -170,14 +170,28 @@ automatically-unhide-macos-hidden-apps = true
     shift-down = ['volume set 0', 'mode main']
 
 
+# reminder
 [[on-window-detected]]
 if.app-id = 'com.apple.reminders'
 run = 'layout floating'
 
+# slack
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 check-further-callbacks = true
 run = ['layout tiling', 'move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser.beta'
+run = ['layout tiling', 'move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser'
+run = ['layout floating', 'move-node-to-workspace 0']
+
+[[on-window-detected]]
+if.app-id = 'com.trae.app'
+run = ['layout tiling', 'move-node-to-workspace 4']
 
 [[on-window-detected]]
 if.workspace = '5'
