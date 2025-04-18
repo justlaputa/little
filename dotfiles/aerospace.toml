@@ -196,4 +196,3 @@ run = ['layout tiling', 'move-node-to-workspace 4']
 [[on-window-detected]]
 if.workspace = '5'
 run = 'layout floating'
-
