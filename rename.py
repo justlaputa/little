@@ -36,7 +36,7 @@ for filename in os.listdir(current_directory):
 
         # Get file size in MiB and format it to 6 digits with leading zeros
         file_size_mib = os.path.getsize(file_path) / (1024 * 1024)  # Convert bytes to MiB
-        size_str = f"{int(file_size_mib):06d}"
+        size_str = f"{int(file_size_mib):05d}"
 
         # Convert the creation time to the desired format 'MM-DDTHH:MM'
         date_str = datetime.datetime.fromtimestamp(creation_time).strftime('%m-%dT%H%M')
