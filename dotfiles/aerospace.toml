@@ -170,10 +170,16 @@ automatically-unhide-macos-hidden-apps = true
     shift-down = ['volume set 0', 'mode main']
 
 
-# reminder
+# keep them floating
+## reminder
 [[on-window-detected]]
 if.app-id = 'com.apple.reminders'
 run = 'layout floating'
+
+## obsidian
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['layout floating', 'move-node-to-workspace 5']
 
 # Chrome
 [[on-window-detected]]
