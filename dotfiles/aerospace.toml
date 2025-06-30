@@ -194,6 +194,11 @@ run = 'layout tiling'
 if.app-id = 'com.apple.reminders'
 run = 'layout floating'
 
+## Wechat
+[[on-window-detected]]
+if.app-id = 'com.tencent.xinWeChat'
+run = ['layout floating','move-node-to-workspace 5']
+
 ## Notes
 [[on-window-detected]]
 if.app-id = 'com.apple.Notes'
@@ -207,6 +212,11 @@ run = ['layout floating']
 ## Pixin
 [[on-window-detected]]
 if.app-id = 'com.depthpicture.PixPin'
+run = ['layout floating']
+
+## Numi
+[[on-window-detected]]
+if.app-id = 'com.dmitrynikolaev.numi'
 run = ['layout floating']
 
 # Chrome
