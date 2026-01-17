@@ -20,7 +20,7 @@ for filename in os.listdir(current_directory):
     file_path = os.path.join(current_directory, filename)
     
     # Check if it is a file with .mp4 suffix
-    if os.path.isfile(file_path) and filename.endswith('.mp4'):
+    if os.path.isfile(file_path) and (filename.endswith('.mp4') or filename.endswith('.mkv')):
         # Check if the filename already has our prefix format
         if file_prefix_pattern.match(filename):
             print(f"Skipping '{filename}' as it already has the required prefix format.")
