@@ -2,7 +2,6 @@ import os
 import datetime
 import re
 import argparse
-import xxhash
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Rename MP4 files with size and date prefix')
@@ -42,15 +41,15 @@ for filename in os.listdir(current_directory):
         # Convert the creation time to the desired format 'MM-DDTHH:MM'
         date_str = datetime.datetime.fromtimestamp(creation_time).strftime('%m-%dT%H%M')
 
-        # Calculate xxhash of file content
-        hasher = xxhash.xxh64()
-        with open(file_path, 'rb') as f:
-            while chunk := f.read(8192):
-                hasher.update(chunk)
-        file_hash = hasher.hexdigest()
+        # Get the base filename without extension
+        base_name = filename[:-4]  # Remove '.mp4' extension
 
-        # Create the new filename with size, date, and hash
-        new_filename = f"{size_str}_{date_str}_{file_hash}.mp4"
+        # If filename is longer than 20 characters, take only the last 20
+        if len(base_name) > 20:
+            base_name = base_name[-20:]
+
+        # Create the new filename with size, date, and truncated original name
+        new_filename = f"{size_str}_{date_str}_{base_name}.mp4"
         new_file_path = os.path.join(current_directory, new_filename)
         
         if args.dry_run:
