@@ -153,13 +153,20 @@ while true; do
             if rclone copyto "$REMOTE_DIR/$item_name" "$TARGET_PATH/$item_name" --progress --multi-thread-streams=10; then
                 echo "  [OK] File $item_name downloaded successfully"
 
-                # Delete the remote file after successful download
-                if [ "$DELETE_AFTER_DOWNLOAD" = true ]; then
-                    if rclone deletefile "$REMOTE_DIR/$item_name"; then
-                        echo "  [DEL] File $item_name deleted from remote"
-                    else
-                        echo "  [WARN] Failed to delete $item_name from remote"
+                # Verify integrity with checksum before deleting
+                if rclone check "$REMOTE_DIR/$item_name" "$TARGET_PATH" --one-way --checksum 2>/dev/null; then
+                    echo "  [VERIFY] File $item_name checksum verified"
+
+                    # Delete the remote file after verified download
+                    if [ "$DELETE_AFTER_DOWNLOAD" = true ]; then
+                        if rclone deletefile "$REMOTE_DIR/$item_name"; then
+                            echo "  [DEL] File $item_name deleted from remote"
+                        else
+                            echo "  [WARN] Failed to delete $item_name from remote"
+                        fi
                     fi
+                else
+                    echo "  [WARN] Checksum verification failed for $item_name, skipping delete"
                 fi
             else
                 echo "  [FAIL] Failed to download file $item_name"
@@ -174,13 +181,20 @@ while true; do
             if rclone copy "$REMOTE_DIR/$item_name" "$TARGET_PATH/$item_name" --progress --multi-thread-streams=10; then
                 echo "  [OK] Folder $item_name downloaded successfully"
 
-                # Delete the remote folder after successful download
-                if [ "$DELETE_AFTER_DOWNLOAD" = true ]; then
-                    if rclone purge "$REMOTE_DIR/$item_name"; then
-                        echo "  [DEL] Folder $item_name deleted from remote"
-                    else
-                        echo "  [WARN] Failed to delete folder $item_name from remote"
+                # Verify integrity with checksum before deleting
+                if rclone check "$REMOTE_DIR/$item_name" "$TARGET_PATH/$item_name" --checksum 2>/dev/null; then
+                    echo "  [VERIFY] Folder $item_name checksum verified"
+
+                    # Delete the remote folder after verified download
+                    if [ "$DELETE_AFTER_DOWNLOAD" = true ]; then
+                        if rclone purge "$REMOTE_DIR/$item_name"; then
+                            echo "  [DEL] Folder $item_name deleted from remote"
+                        else
+                            echo "  [WARN] Failed to delete folder $item_name from remote"
+                        fi
                     fi
+                else
+                    echo "  [WARN] Checksum verification failed for folder $item_name, skipping delete"
                 fi
             else
                 echo "  [FAIL] Failed to download folder $item_name"
