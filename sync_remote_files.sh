@@ -7,6 +7,7 @@ set -e
 
 # Parse arguments
 DELETE_AFTER_DOWNLOAD=true
+SORT_BY="size"
 REMOTE_DIR=""
 TARGET_PATH="."
 
@@ -15,6 +16,14 @@ while [[ $# -gt 0 ]]; do
         --no-delete)
             DELETE_AFTER_DOWNLOAD=false
             shift
+            ;;
+        --sort=*)
+            SORT_BY="${1#--sort=}"
+            shift
+            ;;
+        -s)
+            SORT_BY="$2"
+            shift 2
             ;;
         *)
             if [ -z "$REMOTE_DIR" ]; then
@@ -27,12 +36,19 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Validate sort key
+if [ "$SORT_BY" != "size" ] && [ "$SORT_BY" != "name" ]; then
+    echo "Error: Invalid sort key '$SORT_BY'. Supported: size, name"
+    exit 1
+fi
+
 # Check if remote directory argument is provided
 if [ -z "$REMOTE_DIR" ]; then
-    echo "Usage: $0 [--no-delete] <remote-directory> [target-path]"
+    echo "Usage: $0 [--no-delete] [--sort=<size|name>|-s <size|name>] <remote-directory> [target-path]"
     echo "Example: $0 myremote:/path/to/folder"
     echo "Example: $0 --no-delete myremote:/path/to/folder"
-    echo "Example: $0 myremote:/path/to/folder /path/to/local/folder"
+    echo "Example: $0 --sort=name myremote:/path/to/folder"
+    echo "Example: $0 -s name myremote:/path/to/folder /path/to/local/folder"
     echo "Example: $0 --no-delete myremote:/path/to/folder ./downloads"
     exit 1
 fi
@@ -49,6 +65,7 @@ TARGET_PATH=$(cd "$TARGET_PATH" && pwd)
 echo "Starting continuous sync from: $REMOTE_DIR"
 echo "Items will be downloaded to: $TARGET_PATH"
 echo "Delete after download: $DELETE_AFTER_DOWNLOAD"
+echo "Sort by: $SORT_BY"
 echo "Press Ctrl+C to stop"
 echo ""
 
@@ -114,11 +131,18 @@ while true; do
         continue
     fi
 
-    # Display all items sorted by size
+    # Build sort command based on sort key
+    if [ "$SORT_BY" = "name" ]; then
+        SORT_CMD="sort -t';' -k3"
+    else
+        SORT_CMD="sort -n -t';' -k1"
+    fi
+
+    # Display all items sorted
     echo ""
-    echo "Items in remote folder (sorted by size):"
+    echo "Items in remote folder (sorted by $SORT_BY):"
     echo "----------------------------------------"
-    sort -n -t';' -k1 "$TEMP_COMBINED" | while IFS=';' read -r item_size item_type item_name; do
+    eval "$SORT_CMD" "$TEMP_COMBINED" | while IFS=';' read -r item_size item_type item_name; do
         formatted_size=$(format_size "$item_size")
         printf "  %10s - [%s] %s\n" "$formatted_size" "$(echo $item_type | tr '[:lower:]' '[:upper:]')" "$item_name"
     done
@@ -205,7 +229,7 @@ while true; do
 
         # Break after processing one item
         break
-    done < <(sort -n -t';' -k1 "$TEMP_COMBINED")
+    done < <(eval "$SORT_CMD" "$TEMP_COMBINED")
 
     # Clean up temp files
     rm "$TEMP_FILES" "$TEMP_FOLDERS" "$TEMP_COMBINED"
